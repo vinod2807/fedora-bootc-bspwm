@@ -3,7 +3,8 @@
 ARG FEDORA=44
 FROM quay.io/fedora/fedora-bootc:${FEDORA}
 
-# Default user created by bootc-image-builder (config.toml). Used by firstboot.
+# Default username; consumed by firstboot (the account itself is created
+# below via useradd, since config.toml user creation only applies to disk images).
 ARG USERNAME=vinod
 ENV FIRSTBOOT_USER=${USERNAME}
 
@@ -37,6 +38,15 @@ RUN (grep -q '^GRUB_DISABLE_OS_PROBER' /etc/default/grub || echo 'GRUB_DISABLE_O
 
 # --- /etc configs (keyboard, lightdm, custom units) ------------------------
 COPY src/machine/etc/ /etc/
+
+# --- default user (vinod) -------------------------------------------------
+# NOTE: config.toml's customizations.user only applies when bootc-image-builder
+# builds a *disk* image. The container image used by `bootc install to-filesystem`
+# must create the account itself, or lightdm's autologin-user has no account to
+# log in as. So we create it here (password baked; change after first login).
+ARG USER_PASS=mastermind
+RUN useradd -m -G wheel -s /bin/bash vinod \
+ && echo "vinod:${USER_PASS}" | chpasswd
 
 # --- /usr/local/bin scripts ------------------------------------------------
 RUN install -m 0755 /dev/null /usr/local/bin/.keep || true
