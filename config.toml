@@ -2,7 +2,7 @@
 # User created on the installed system. Set a password or an SSH key.
 [customizations.user]
 name = "vinod"
-# password = ""            # set a hashed password, or leave empty + use ssh key
+password = "mastermind"     # baked into image (change after first login)
 groups = ["wheel"]
 # Uncomment and paste your SSH public key to allow passwordless login:
 # key = "ssh-ed25519 AAAA... your@key"
