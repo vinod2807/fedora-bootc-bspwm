@@ -29,7 +29,11 @@ COPY src/machine/packages-full.txt /tmp/packages-full.txt
 RUN xargs -a /tmp/packages-full.txt dnf -y install --skip-unavailable && dnf clean all
 
 # --- legacy BIOS boot support (grub2-pc) ----------------------------------
-RUN dnf -y install grub2-pc grub2-pc-modules && dnf clean all
+# ostree-grub2 provides /etc/grub.d/15_ostree so `grub2-mkconfig` (run by
+# bootc on upgrade) auto-tracks the bootc default/rollback deployment.
+# os-prober keeps Ubuntu/Arch/Windows in the menu; enable it explicitly.
+RUN dnf -y install grub2-pc grub2-pc-modules grub2-tools ostree-grub2 os-prober && dnf clean all
+RUN (grep -q '^GRUB_DISABLE_OS_PROBER' /etc/default/grub || echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub)
 
 # --- /etc configs (keyboard, lightdm, custom units) ------------------------
 COPY src/machine/etc/ /etc/
