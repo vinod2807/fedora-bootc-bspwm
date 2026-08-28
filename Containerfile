@@ -15,13 +15,13 @@ RUN dnf -y install git rsync && dnf clean all
 # auto-fetched). rpmfusion + terra ship their keys via release packages, so
 # install those to provide both repo files and GPG keys.
 COPY src/machine/repos/ /etc/yum.repos.d/
-RUN rm -f /etc/yum.repos.d/rpmfusion-*.repo /etc/yum.repos.d/terra.repo
+RUN rm -f /etc/yum.repos.d/rpmfusion-*.repo
 RUN mkdir -p /etc/pki/rpm-gpg \
  && cp -v /etc/yum.repos.d/RPM-GPG-KEY-* /etc/pki/rpm-gpg/ 2>/dev/null || true \
  && dnf -y install \
       https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm \
       https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-44.noarch.rpm \
-      https://terra.fyralabs.com/terra-release.rpm \
+      distribution-gpg-keys \
  && dnf clean all && dnf -q makecache
 
 # --- full package set (mirrors this PC) ------------------------------------
