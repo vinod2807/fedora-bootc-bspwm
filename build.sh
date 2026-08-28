@@ -5,11 +5,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-IMAGE="${IMAGE:-localhost/fedora-bootc-bspwm:latest}"
+# Default: pull the image built by GitHub Actions (no local container build).
+# Override with IMAGE=localhost/fedora-bootc-bspwm:latest to build locally instead.
+IMAGE="${IMAGE:-ghcr.io/vinod2807/fedora-bootc-bspwm:latest}"
 BUILDER="quay.io/centos-bootc/bootc-image-builder:latest"
 
-echo "==> Building container image"
-sudo podman build -t "$IMAGE" .
+echo "==> Pulling prebuilt image from ghcr ($IMAGE)"
+sudo podman pull "$IMAGE"
 
 mkdir -p output
 
