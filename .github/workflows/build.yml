@@ -24,7 +24,9 @@ jobs:
           sudo apt-get install -y podman
 
       - name: Log in to ghcr.io
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+        # Prefer a PAT with read:packages + write:packages (secret GHCR_TOKEN);
+        # fall back to the workflow GITHUB_TOKEN if that scope is granted.
+        run: echo "${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Free disk space
         uses: jlumbroso/free-disk-space@main
