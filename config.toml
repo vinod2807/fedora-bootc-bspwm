@@ -1,0 +1,17 @@
+# bootc-image-builder configuration
+# User created on the installed system. Set a password or an SSH key.
+[customizations.user]
+name = "vinod"
+# password = ""            # set a hashed password, or leave empty + use ssh key
+groups = ["wheel"]
+# Uncomment and paste your SSH public key to allow passwordless login:
+# key = "ssh-ed25519 AAAA... your@key"
+
+# Disk layout for the generated raw/iso image.
+[[customizations.filesystem]]
+mountpoint = "/"
+minsize = "40 GiB"
+
+[[customizations.filesystem]]
+mountpoint = "/boot"
+minsize = "1 GiB"

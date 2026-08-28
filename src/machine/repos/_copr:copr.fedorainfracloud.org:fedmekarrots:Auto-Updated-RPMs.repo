@@ -1,0 +1,10 @@
+[copr:copr.fedorainfracloud.org:fedmekarrots:Auto-Updated-RPMs]
+name=Copr repo for Auto-Updated-RPMs owned by fedmekarrots
+baseurl=https://download.copr.fedorainfracloud.org/results/fedmekarrots/Auto-Updated-RPMs/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/fedmekarrots/Auto-Updated-RPMs/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1

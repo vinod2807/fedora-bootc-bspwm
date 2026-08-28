@@ -1,0 +1,13 @@
+[Unit]
+Description=Konica Minolta 206 CUPS USB presence watcher
+After=cups.service legacy-printer-app.service
+Wants=cups.service
+ConditionPathExists=/usr/local/bin/konica-cups-watch.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/konica-cups-watch.sh check
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

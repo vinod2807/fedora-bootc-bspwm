@@ -1,0 +1,9 @@
+[Unit]
+Description=Apply pending bootc upgrade
+Documentation=https://bootc.dev
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c '\
+  bootc upgrade || exit 0; \
+  if bootc status --json 2>/dev/null | grep -q "\"staged\""; then systemctl reboot; fi'

@@ -1,0 +1,10 @@
+dbus-broker.service
+syncthing.service
+systemd-tmpfiles-setup.service
+wireplumber.service
+xdg-user-dirs.service
+dbus.socket
+pipewire-pulse.socket
+pipewire.socket
+grub-boot-success.timer
+systemd-tmpfiles-clean.timer

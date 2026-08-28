@@ -1,0 +1,11 @@
+[copr:copr.fedorainfracloud.org:lbarrys:LBsWorld44]
+name=Copr repo for LBsWorld44 owned by lbarrys
+baseurl=https://download.copr.fedorainfracloud.org/results/lbarrys/LBsWorld44/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/lbarrys/LBsWorld44/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+priority=1

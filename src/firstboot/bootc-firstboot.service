@@ -1,0 +1,14 @@
+[Unit]
+Description=bootc first-boot provisioning (printers, dotfiles, user services)
+ConditionFirstBoot=yes
+After=network-online.target cups.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Environment=FIRSTBOOT_USER=vinod
+ExecStart=/usr/local/sbin/bootc-firstboot.sh
+
+[Install]
+WantedBy=multi-user.target

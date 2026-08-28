@@ -1,0 +1,38 @@
+name: build-and-push
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Rebuild every Monday 03:07 UTC -> new image for `bootc upgrade`.
+    - cron: '7 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+
+      - name: Log in to ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build image
+        run: |
+          podman build -t ghcr.io/${{ github.repository }}:latest .
+          DATE=$(date +%Y-%m-%d)
+          podman tag ghcr.io/${{ github.repository }}:latest ghcr.io/${{ github.repository }}:${DATE}
+
+      - name: Push image
+        run: |
+          podman push ghcr.io/${{ github.repository }}:latest
+          podman push ghcr.io/${{ github.repository }}:$(date +%Y-%m-%d)

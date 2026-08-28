@@ -1,0 +1,7 @@
+# Disk images (raw/iso) and large binary blobs are NOT committed.
+/src/machine/opt/*.tar.gz
+/output/
+*.raw
+*.qcow2
+*.iso
+.DS_Store
