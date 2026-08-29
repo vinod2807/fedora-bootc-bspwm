@@ -39,4 +39,14 @@ for s in $USERSV; do
 done
 chown -R "$USER:$USER" "$HOME/.config/systemd"
 
+# --- flatpak GUI apps (installed post-login, not in the image) ------------
+# Runs in the background so first login is not blocked on large downloads.
+if command -v flatpak >/dev/null 2>&1; then
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo 2>/dev/null || true
+  setsid bash -c \
+    "sudo -u $USER flatpak install -y flathub org.mozilla.firefox >/var/log/firstboot-flatpak.log 2>&1 \
+     && sudo -u $USER flatpak install -y flathub org.libreoffice.LibreOffice >>/var/log/firstboot-flatpak.log 2>&1" &
+  echo "flatpak app install started in background (see /var/log/firstboot-flatpak.log)"
+fi
+
 echo "firstboot complete"

@@ -29,6 +29,11 @@ RUN mkdir -p /etc/pki/rpm-gpg \
 COPY src/machine/packages-full.txt /tmp/packages-full.txt
 RUN xargs -a /tmp/packages-full.txt dnf -y install --skip-unavailable && dnf clean all
 
+# --- flatpak + flathub (heavy GUI apps are installed post-login, NOT baked ---
+# into the image, to keep the bootc image small). See bootc-firstboot.sh.
+RUN dnf -y install flatpak && dnf clean all \
+ && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+
 # --- legacy BIOS boot support (grub2-pc) ----------------------------------
 # ostree-grub2 provides /etc/grub.d/15_ostree so `grub2-mkconfig` (run by
 # bootc on upgrade) auto-tracks the bootc default/rollback deployment.
